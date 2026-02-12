@@ -167,17 +167,26 @@
       flex-direction: column;
       align-items: center;
       gap: 0.35rem;
+      position: relative;
       transition: left 0.08s linear, top 0.08s linear;
       will-change: left, top;
     }
 
     #noTaunt {
+      position: absolute;
+      left: 50%;
+      bottom: calc(100% + 0.35rem);
+      transform: translateX(-50%);
+      width: max-content;
+      max-width: min(220px, 70vw);
+      text-align: center;
       font-size: 0.85rem;
       color: #8b2b56;
-      min-height: 1.2rem;
       opacity: 0;
       transition: opacity 0.25s ease;
       font-weight: 500;
+      pointer-events: none;
+      line-height: 1.2;
     }
 
     #noBtn {
@@ -345,7 +354,7 @@
   </audio>
 
   <script>
-    const proposalLine = `From the moment I met you, my world became brighter ❤️\nWill you be my Valentine? Nehaaaaa🥰`;
+    const proposalLine = `From the moment I met you, my world became brighter ❤️\nWill you be my Valentine?Nehaaaav🥰`;
     const proposalText = document.getElementById('proposalText');
     const noWrap = document.getElementById('noWrap');
     const noBtn = document.getElementById('noBtn');
@@ -391,8 +400,9 @@
 
     function clampNoPosition(x, y) {
       const padding = 12;
-      const maxX = window.innerWidth - noWrap.offsetWidth - padding;
-      const maxY = window.innerHeight - noWrap.offsetHeight - padding;
+      const bounds = noWrap.offsetParent.getBoundingClientRect();
+      const maxX = bounds.width - noWrap.offsetWidth - padding;
+      const maxY = bounds.height - noWrap.offsetHeight - padding;
       return {
         x: Math.min(Math.max(padding, x), Math.max(padding, maxX)),
         y: Math.min(Math.max(padding, y), Math.max(padding, maxY))
@@ -410,9 +420,11 @@
     function ensureNoInitialized() {
       if (noState.initialized) return;
       const rect = noWrap.getBoundingClientRect();
-      noWrap.style.position = 'fixed';
+      const containerRect = noWrap.offsetParent.getBoundingClientRect();
+      noWrap.style.position = 'absolute';
       noWrap.style.margin = '0';
-      setNoPosition(rect.left, rect.top);
+      noWrap.style.zIndex = '4';
+      setNoPosition(rect.left - containerRect.left, rect.top - containerRect.top);
       noState.targetX = noState.x;
       noState.targetY = noState.y;
       noState.initialized = true;
