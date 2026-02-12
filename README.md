@@ -20,7 +20,7 @@ git push -u origin <your-branch>
 
 ### 3) Trigger deployment
 
-- Merge/push to `main` (or `master`), or
+- Merge/push to `main` or `master`, or
 - Run the workflow manually from **Actions → Deploy static site to GitHub Pages → Run workflow**
 
 ### 4) Live URL
